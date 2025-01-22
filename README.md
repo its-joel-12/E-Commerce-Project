@@ -3,3 +3,4 @@
 dependencies:
 
 1) Spring Web
+2) Devtools
