@@ -1,8 +1,13 @@
 package com.joel.model;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Category {
+    @Id
     private Long categoryId;
     private String categoryName;
+
 
     public Category(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
