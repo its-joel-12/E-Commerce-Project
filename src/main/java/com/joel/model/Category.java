@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 @Entity
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     private String categoryName;
 
+    public Category() {
+    }
 
     public Category(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
