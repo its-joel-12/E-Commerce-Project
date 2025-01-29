@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.ReverseOrderListView;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -28,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(Category category) {
-        category.setCategoryId(nextId++);
+//        category.setCategoryId(nextId++);
         categoryRepository.save(category);
     }
 
