@@ -7,3 +7,4 @@ dependencies:
 3) Swagger doc
 4) Data JPA
 5) H2 Database
+6) Lombok
