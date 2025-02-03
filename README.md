@@ -8,3 +8,4 @@ dependencies:
 4) Data JPA
 5) H2 Database
 6) Lombok
+7) Hibernate Validator
