@@ -1,5 +1,7 @@
 package com.joel.service;
 
+import com.joel.exception.ApiException;
+import com.joel.exception.ResourceNotFoundException;
 import com.joel.model.Category;
 import com.joel.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +16,36 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-//    private List<Category> categories = new ArrayList<>();
-    private Long nextId = 1L;
+    //    private List<Category> categories = new ArrayList<>();
+//    private Long nextId = 1L;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAll();
+        if(categories.isEmpty()){
+            throw new ResourceNotFoundException("No categories present in the database !");
+        }
+        return categories;
     }
 
     @Override
     public void createCategory(Category category) {
+        Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if(savedCategory != null){
+            throw new ApiException("Category with name '" + category.getCategoryName() + "' already exists !");
+        }
 //        category.setCategoryId(nextId++);
         categoryRepository.save(category);
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
-        Category existingCategory = categoryRepository.findById(categoryId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found !"));
+        Category existingCategory = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with the given id: " + categoryId));
 
         categoryRepository.delete(existingCategory);
 
@@ -44,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category updateCategory(Category category, Long categoryId) {
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
 
-        Category existingCategory = optionalCategory.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found !"));
+        Category existingCategory = optionalCategory.orElseThrow(() -> new ResourceNotFoundException("Category not found with the given id: " + categoryId));
 
         category.setCategoryId(categoryId);
 
