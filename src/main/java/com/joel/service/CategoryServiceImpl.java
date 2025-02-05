@@ -3,6 +3,7 @@ package com.joel.service;
 import com.joel.exception.ApiException;
 import com.joel.exception.ResourceNotFoundException;
 import com.joel.model.Category;
+import com.joel.payload.CategoryResponseDto;
 import com.joel.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getAllCategories() {
+    public CategoryResponseDto getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         if(categories.isEmpty()){
             throw new ResourceNotFoundException("No categories present in the database !");
