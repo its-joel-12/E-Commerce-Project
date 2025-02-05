@@ -9,6 +9,9 @@ import com.joel.payload.CategoryResponseDto;
 import com.joel.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +28,11 @@ public class CategoryServiceImpl implements CategoryService {
     private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponseDto getAllCategories() {
-        List<Category> categories = categoryRepository.findAll();
+    public CategoryResponseDto getAllCategories(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<Category> pageCategories = categoryRepository.findAll(pageable);
+        List<Category> categories = pageCategories.getContent();
+
         if(categories.isEmpty()){
             throw new ResourceNotFoundException("No categories present in the database !");
         }
