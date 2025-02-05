@@ -1,6 +1,7 @@
 package com.joel.controller;
 
 import com.joel.model.Category;
+import com.joel.payload.CategoryResponseDto;
 import com.joel.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("public/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<CategoryResponseDto> getAllCategories() {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
 

@@ -9,3 +9,4 @@ dependencies:
 5) H2 Database
 6) Lombok
 7) Hibernate Validator
+8) Model Mapper V3.0.0

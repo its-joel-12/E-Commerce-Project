@@ -3,13 +3,16 @@ package com.joel.service;
 import com.joel.exception.ApiException;
 import com.joel.exception.ResourceNotFoundException;
 import com.joel.model.Category;
+import com.joel.payload.CategoryDto;
 import com.joel.payload.CategoryResponseDto;
 import com.joel.repository.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -17,13 +20,24 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public CategoryResponseDto getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         if(categories.isEmpty()){
             throw new ResourceNotFoundException("No categories present in the database !");
         }
-        return categories;
+
+        List<CategoryDto> categoryDtoList = categories
+                .stream()
+                .map(c -> modelMapper.map(c, CategoryDto.class))
+                .toList();
+
+        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
+        categoryResponseDto.setContent(categoryDtoList);
+        return categoryResponseDto;
     }
 
     @Override
