@@ -4,6 +4,7 @@ import com.joel.exception.ApiException;
 import com.joel.exception.ResourceNotFoundException;
 import com.joel.model.Category;
 import com.joel.payload.CategoryDto;
+import com.joel.payload.CategoryRequestDto;
 import com.joel.payload.CategoryResponseDto;
 import com.joel.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
@@ -41,12 +42,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void createCategory(Category category) {
-        Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+    public CategoryDto createCategory(CategoryRequestDto categoryRequestDto) {
+        Category savedCategory = categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName());
         if(savedCategory != null){
-            throw new ApiException("Category with name '" + category.getCategoryName() + "' already exists !");
+            throw new ApiException("Category with name '" + categoryRequestDto.getCategoryName() + "' already exists !");
         }
-        categoryRepository.save(category);
+
+        Category save = categoryRepository.save(modelMapper.map(categoryRequestDto, Category.class));
+        return modelMapper.map(save, CategoryDto.class);
     }
 
     @Override

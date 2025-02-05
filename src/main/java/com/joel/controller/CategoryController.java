@@ -1,6 +1,8 @@
 package com.joel.controller;
 
 import com.joel.model.Category;
+import com.joel.payload.CategoryDto;
+import com.joel.payload.CategoryRequestDto;
 import com.joel.payload.CategoryResponseDto;
 import com.joel.service.CategoryService;
 import jakarta.validation.Valid;
@@ -24,9 +26,8 @@ public class CategoryController {
     }
 
     @PostMapping("public/categories")
-    public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
-        categoryService.createCategory(category);
-        return new ResponseEntity<>("Category Added Successfully", HttpStatus.CREATED);
+    public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryRequestDto categoryDto) {
+        return new ResponseEntity<>(categoryService.createCategory(categoryDto), HttpStatus.CREATED);
 
     }
 
