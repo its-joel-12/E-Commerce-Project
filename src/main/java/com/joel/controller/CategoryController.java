@@ -1,5 +1,6 @@
 package com.joel.controller;
 
+import com.joel.config.AppConstant;
 import com.joel.model.Category;
 import com.joel.payload.CategoryDto;
 import com.joel.payload.CategoryRequestDto;
@@ -22,8 +23,8 @@ public class CategoryController {
 
     @GetMapping("public/categories")
     public ResponseEntity<CategoryResponseDto> getAllCategories(
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer pageSize
+            @RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) Integer pageSize
     ) {
         return new ResponseEntity<>(categoryService.getAllCategories(pageNumber, pageSize), HttpStatus.OK);
     }
