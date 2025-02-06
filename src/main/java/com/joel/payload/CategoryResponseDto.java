@@ -13,4 +13,9 @@ import java.util.List;
 @Setter
 public class CategoryResponseDto {
     private List<CategoryDto> content;
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Integer totalElements;
+    private Integer totalPages;
+    private Boolean lastPage;
 }
