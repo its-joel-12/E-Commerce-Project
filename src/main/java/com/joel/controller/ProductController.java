@@ -1,6 +1,5 @@
 package com.joel.controller;
 
-import com.joel.model.Product;
 import com.joel.payload.ProductDto;
 import com.joel.payload.ProductRequestDto;
 import com.joel.payload.ProductResponseDto;
@@ -33,5 +32,11 @@ public class ProductController {
     @GetMapping("public/categories/{categoryId}/products")
     public ResponseEntity<ProductResponseDto> getProductsByCategory(@PathVariable Long categoryId){
         return new ResponseEntity<>(productService.getProductsByCategory(categoryId), HttpStatus.OK);
+    }
+
+    // GET PRODUCTS BY KEYWORD
+    @GetMapping("public/products/keyword/{keyword}")
+    public ResponseEntity<ProductResponseDto> getProductsByKeyword(@PathVariable String keyword){
+        return new ResponseEntity<>(productService.getProductsByKeyword(keyword), HttpStatus.OK);
     }
 }

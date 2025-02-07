@@ -61,4 +61,17 @@ public class ProductServiceImpl implements ProductService {
         productResponseDto.setContent(productDtoList);
         return productResponseDto;
     }
+
+    @Override
+    public ProductResponseDto getProductsByKeyword(String keyword) {
+        List<Product> allProducts = productRepo.findByProductNameContainingIgnoreCase((keyword));
+        if(allProducts.isEmpty()){
+            throw new ResourceNotFoundException("No matching results founds !");
+        }
+
+        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).collect(Collectors.toList());
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setContent(productDtoList);
+        return productResponseDto;
+    }
 }
