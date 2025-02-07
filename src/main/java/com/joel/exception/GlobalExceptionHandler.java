@@ -56,4 +56,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    // UNIDENTIFIED EXCEPTION
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ECommerceException> handleUnknownException(Exception ex) {
+
+        ECommerceException error = new ECommerceException(
+                500,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Un identified error | Please contact the Backend Developer!!... :D",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
