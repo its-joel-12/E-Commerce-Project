@@ -2,6 +2,8 @@ package com.joel.controller;
 
 import com.joel.model.Product;
 import com.joel.payload.ProductDto;
+import com.joel.payload.ProductRequestDto;
+import com.joel.payload.ProductResponseDto;
 import com.joel.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +17,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("admin/categories/{categoryId}/product")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody Product product, @PathVariable Long categoryId){
-        return new ResponseEntity<>(productService.addProduct(product, categoryId), HttpStatus.CREATED);
+    // SAVE PRODUCT
+    @PostMapping("admin/categories/{categoryId}/products")
+    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductRequestDto productRequestDto, @PathVariable Long categoryId){
+        return new ResponseEntity<>(productService.addProduct(productRequestDto, categoryId), HttpStatus.CREATED);
+    }
+
+    // GET ALL PRODUCTS
+    @GetMapping("public/products")
+    public ResponseEntity<ProductResponseDto> getAllProducts(){
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 }

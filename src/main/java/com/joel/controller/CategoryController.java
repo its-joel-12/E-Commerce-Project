@@ -21,6 +21,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    // GET ALL CATEGORIES
     @GetMapping("public/categories")
     public ResponseEntity<CategoryResponseDto> getAllCategories(
             @RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -31,18 +32,21 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortOrder), HttpStatus.OK);
     }
 
+    // CREATE CATEGORY
     @PostMapping("public/categories")
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryRequestDto categoryDto) {
         return new ResponseEntity<>(categoryService.createCategory(categoryDto), HttpStatus.CREATED);
 
     }
 
+    // DELETE CATEGORY
     @DeleteMapping("admin/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
         String status = categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
+    // UPDATE CATEGORY
     @PutMapping("admin/categories/{categoryId}")
     public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryRequestDto category, @PathVariable Long categoryId) {
         return new ResponseEntity<>(categoryService.updateCategory(category, categoryId), HttpStatus.OK);
