@@ -8,4 +8,6 @@ import com.joel.payload.ProductResponseDto;
 public interface ProductService {
     ProductDto addProduct(ProductRequestDto productRequestDto, Long categoryId);
     ProductResponseDto getAllProducts();
+
+    ProductResponseDto getProductsByCategory(Long categoryId);
 }
