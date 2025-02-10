@@ -88,4 +88,16 @@ public class ProductServiceImpl implements ProductService {
         product.setProductSpecPrice(product.getProductPrice() - (product.getProductPrice() * product.getProductDiscount() / 100));
         return modelMapper.map(product, ProductDto.class);
     }
+
+    @Override
+    public String deleteProduct(Long productId) {
+
+        Product existingProduct = productRepo
+                .findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with the given id: " + productId));
+
+        productRepo.delete(existingProduct);
+
+        return "Product with product Id: " + productId + " deleted successfully !";
+    }
 }
