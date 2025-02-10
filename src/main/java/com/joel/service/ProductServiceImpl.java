@@ -13,19 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
     private ProductRepository productRepo;
-
-    @Autowired
     private CategoryRepository categoryRepo;
+    private ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public ProductServiceImpl(ProductRepository productRepo, CategoryRepository categoryRepo, ModelMapper modelMapper) {
+        this.productRepo = productRepo;
+        this.categoryRepo = categoryRepo;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public ProductDto addProduct(ProductRequestDto productRequestDto, Long categoryId) {
@@ -45,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
         if(allProducts.isEmpty()){
             throw new ResourceNotFoundException("No products found");
         }
-        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).collect(Collectors.toList());
+        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).toList();
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setContent(productDtoList);
         return productResponseDto;
@@ -56,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found with the given id: " + categoryId));
         List<Product> allProducts = productRepo.findByCategoryOrderByProductPriceAsc((category));
 
-        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).collect(Collectors.toList());
+        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).toList();
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setContent(productDtoList);
         return productResponseDto;
@@ -69,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("No matching results founds !");
         }
 
-        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).collect(Collectors.toList());
+        List<ProductDto> productDtoList = allProducts.stream().map(p -> modelMapper.map(p, ProductDto.class)).toList();
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setContent(productDtoList);
         return productResponseDto;

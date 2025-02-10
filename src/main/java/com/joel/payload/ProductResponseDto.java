@@ -1,6 +1,5 @@
 package com.joel.payload;
 
-import com.joel.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

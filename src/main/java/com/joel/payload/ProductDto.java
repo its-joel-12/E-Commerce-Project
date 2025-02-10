@@ -1,7 +1,5 @@
 package com.joel.payload;
 
-import com.joel.model.Category;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

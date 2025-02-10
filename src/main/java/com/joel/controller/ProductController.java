@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api")
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     // SAVE PRODUCT
     @PostMapping("admin/categories/{categoryId}/products")
@@ -42,7 +46,7 @@ public class ProductController {
 
     // UPDATE PRODUCT
     @PutMapping("admin/products/{productId}")
-    public ResponseEntity<ProductDto> UpdateProduct(@RequestBody ProductRequestDto productRequestDto, @PathVariable Long productId){
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductRequestDto productRequestDto, @PathVariable Long productId){
         return new ResponseEntity<>(productService.updateProduct(productRequestDto, productId), HttpStatus.OK);
     }
 

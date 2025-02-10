@@ -1,7 +1,6 @@
 package com.joel.controller;
 
 import com.joel.config.AppConstant;
-import com.joel.model.Category;
 import com.joel.payload.CategoryDto;
 import com.joel.payload.CategoryRequestDto;
 import com.joel.payload.CategoryResponseDto;
@@ -12,14 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api")
 public class CategoryController {
 
-    @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     // GET ALL CATEGORIES
     @GetMapping("public/categories")

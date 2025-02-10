@@ -16,16 +16,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
+        this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public CategoryResponseDto getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
@@ -77,13 +80,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(CategoryRequestDto categoryRequestDto, Long categoryId) {
-        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
-        optionalCategory.orElseThrow(() -> new ResourceNotFoundException("Category not found with the given id: " + categoryId));
+        Category existingCategory = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with the given id: " + categoryId));
 
-        Category category = new Category();
-        category.setCategoryId(categoryId);
-        category.setCategoryName(categoryRequestDto.getCategoryName());
-        Category updatedCategory = categoryRepository.save(category);
+        existingCategory.setCategoryId(categoryId);
+        existingCategory.setCategoryName(categoryRequestDto.getCategoryName());
+        Category updatedCategory = categoryRepository.save(existingCategory);
         return modelMapper.map(updatedCategory, CategoryDto.class);
     }
 }
