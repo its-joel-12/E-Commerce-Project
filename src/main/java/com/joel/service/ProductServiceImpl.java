@@ -10,15 +10,12 @@ import com.joel.repository.CategoryRepository;
 import com.joel.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,12 +23,17 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepo;
     private CategoryRepository categoryRepo;
     private ModelMapper modelMapper;
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private String path;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepo, CategoryRepository categoryRepo, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepo, CategoryRepository categoryRepo, ModelMapper modelMapper, FileService fileService) {
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
         this.modelMapper = modelMapper;
+        this.fileService = fileService;
     }
 
     @Override
@@ -115,8 +117,7 @@ public class ProductServiceImpl implements ProductService {
 
         // upload image to the server
         // get the file name of the uploaded image
-        String path = "images/";
-        String fileName = uploadImage(path, image);
+        String fileName = fileService.uploadImage(path, image);
 
         // updating the new file name to the product
         existingProduct.setProductImage(fileName);
@@ -126,27 +127,5 @@ public class ProductServiceImpl implements ProductService {
 
         // return product dto after mapping product to dto
         return modelMapper.map(udpatedProduct, ProductDto.class);
-    }
-
-    private String uploadImage(String path, MultipartFile file) throws IOException {
-        // get filename of the original / current file
-        String originalFileName= file.getOriginalFilename();
-
-        // generate a unique filename
-        String randomId = UUID.randomUUID().toString();
-        String fileName = randomId.concat(originalFileName.substring(originalFileName.lastIndexOf('.'))); // joe.jpeg --> <uuid>.jpeg
-        String filePath = path + File.separator + fileName;
-
-        // check if path exists else create
-        File folder = new File(path);
-        if(!folder.exists()){
-            folder.mkdir();
-        }
-
-        // upload to server
-        Files.copy(file.getInputStream(), Paths.get(filePath));
-
-        // returning filename
-        return fileName;
     }
 }
