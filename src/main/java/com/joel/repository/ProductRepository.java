@@ -2,14 +2,14 @@ package com.joel.repository;
 
 import com.joel.model.Category;
 import com.joel.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategoryOrderByProductPriceAsc(Category category);
+    Page<Product> findByCategoryOrderByProductPriceAsc(Category category, Pageable pageable);
 
-    List<Product> findByProductNameContainingIgnoreCase(String keyword);
+    Page<Product> findByProductNameContainingIgnoreCase(String keyword, Pageable pageable);
 
     Product findByProductName(String productName);
 }
