@@ -1,5 +1,6 @@
 package com.joel.service;
 
+import com.joel.exception.ApiException;
 import com.joel.exception.ResourceNotFoundException;
 import com.joel.model.Category;
 import com.joel.model.Product;
@@ -38,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto addProduct(ProductRequestDto productRequestDto, Long categoryId) {
+        Product existingProduct = productRepo.findByProductName(productRequestDto.getProductName());
+        if(existingProduct != null){
+            throw new ApiException("Product with name '" + productRequestDto.getProductName() + "' already exists !");
+        }
+
         Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found with the given id: " + categoryId));
         Product product = modelMapper.map(productRequestDto, Product.class);
         product.setCategory(category);

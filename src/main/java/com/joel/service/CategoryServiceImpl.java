@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = pageCategories.getContent();
 
         if (categories.isEmpty()) {
-            throw new ResourceNotFoundException("No categories present in the database !");
+            throw new ResourceNotFoundException("No categories found !");
         }
 
         List<CategoryDto> categoryDtoList = categories
