@@ -10,3 +10,7 @@ dependencies:
 6) Lombok
 7) Hibernate Validator
 8) Model Mapper V3.0.0
+9) Spring Security
+10) Jjwt Api
+11) jjwt Impl
+12) Jjwt Jackson
