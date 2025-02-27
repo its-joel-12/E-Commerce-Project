@@ -3,6 +3,7 @@ package com.joel.controller;
 import com.joel.model.AppRole;
 import com.joel.model.Role;
 import com.joel.model.User;
+import com.joel.repository.RoleRepository;
 import com.joel.repository.UserRepository;
 import com.joel.security.jwt.JwtUtils;
 import com.joel.security.request.LoginRequest;
