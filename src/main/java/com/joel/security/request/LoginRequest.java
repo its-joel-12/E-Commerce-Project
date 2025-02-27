@@ -1,4 +1,4 @@
-package com.joel.security.jwt;
+package com.joel.security.request;
 
 public class LoginRequest {
     private String username;
